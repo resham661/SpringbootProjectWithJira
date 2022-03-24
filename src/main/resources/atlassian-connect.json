@@ -1,0 +1,27 @@
+{
+   "key": "my-addon",
+   "baseUrl": "addon.http://localhost:8082",
+   "name": "My add-on",
+   "authentication": {
+     "type": "jwt"
+   },
+   "lifecycle": {
+     "installed": "/installed",
+     "uninstalled": "/uninstalled"
+   },
+   "apiVersion": 1,
+   "scopes": ["READ","WRITE","DELETE","ADMIN"],
+
+   "modules": {
+      "generalPages": [
+      {
+        "key": "home-page-jira",
+        "location": "system.top.navigation.bar",
+        "name": {
+          "value": "Jira Addon template"
+        },
+        "url": "/getHome"
+      }
+    ]
+  }
+}
