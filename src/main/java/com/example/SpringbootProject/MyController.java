@@ -1,10 +1,6 @@
 package com.example.SpringbootProject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.security.GeneralSecurityException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +27,8 @@ public class MyController {
 	final String api_key="6gxS3ub047gt1uhIUefr1DC1";
 	final String url = "https://resham1.atlassian.net/rest/api/3/issue/";
 
-	@GetMapping("/getHome")
-    public String getHome() throws UnirestException {
+	@GetMapping("/getTicketData")
+    public String getTicketData() throws UnirestException {
 
 		HttpResponse<JsonNode> response = Unirest.get(url + "FP-25")
 				  .basicAuth(username, api_key)
@@ -209,7 +205,7 @@ public class MyController {
 	
 	@RequestMapping("/deleteIssue")
 	public String deleteIssue() throws UnirestException {
-		HttpResponse<String> response = Unirest.delete(url + "FP-24")
+		HttpResponse<String> response = Unirest.delete(url + "FP-60")
 				  .basicAuth(username, api_key)
 				  .asString();
 
@@ -240,7 +236,7 @@ public class MyController {
 		}	
 	}
 	
-	  @RequestMapping("/download")
+/*	  @RequestMapping("/download")
     public String downloadFile() throws IOException, GeneralSecurityException, UnirestException {
       
       String fileId = "1mB8ur76r5gxBtkIhiRyejerHtg04yUvY";
@@ -262,7 +258,7 @@ public class MyController {
 		else {
 			return ("Please check the Issue id or key\n" + response.getBody());
 		}
-    }
+    }*/
 	  
 	@ExceptionHandler(RuntimeException.class)
 	public final ResponseEntity<Exception> handleAllExceptions(RuntimeException ex) {
