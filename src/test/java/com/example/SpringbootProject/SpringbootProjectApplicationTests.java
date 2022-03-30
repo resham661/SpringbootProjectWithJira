@@ -29,7 +29,7 @@ class SpringbootProjectApplicationTests {
 	}
 	
     final String username="reshamguru123@gmail.com";
-	final String api_key="7CKwd1HFdabf0HMd2B0R4DB1";
+	final String api_key="LKlRO8gW7hGH98Q66PGu4C4A";
 	final String url = "https://resham1.atlassian.net/rest/api/3/issue/";
 	
 	@Test
