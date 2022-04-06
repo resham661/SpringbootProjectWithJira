@@ -3,6 +3,7 @@ package com.example.SpringbootProject;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
@@ -13,15 +14,14 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import static org.junit.Assert.assertEquals;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 class SpringbootProjectApplicationTests {
 	
 	@Test
@@ -29,21 +29,21 @@ class SpringbootProjectApplicationTests {
 	}
 	
     final String username="reshamguru123@gmail.com";
-	final String api_key="LKlRO8gW7hGH98Q66PGu4C4A";
+	final String api_key="NNpf1Wg2md7RxxUEfY94CB9E";
 	final String url = "https://resham1.atlassian.net/rest/api/3/issue/";
 	
 	@Test
-	public void getTicketDataTest() throws Exception {
+	public void getTicketDataTest() throws UnirestException {
 		
-		HttpResponse<JsonNode> response = Unirest.get(url + "FP-25")
+		HttpResponse<String> response = Unirest.get(url + "FP-25")
 				  .basicAuth(username, api_key)
 				  .header("Accept", "application/json")
-				  .asJson();
+				  .asString();
 	    assertEquals(200, response.getStatus());	   
     }
 	
 	@Test
-	public void createIssueTest() throws Exception 
+	public void createIssueTest() throws UnirestException 
 	{
 		JsonNodeFactory factory = JsonNodeFactory.instance;
 		ObjectNode dataTable = new ObjectNode(factory);
@@ -105,12 +105,12 @@ class SpringbootProjectApplicationTests {
 				}
 			}
 		});
-		HttpResponse<JsonNode> response = Unirest.post(url)
+		HttpResponse<String> response = Unirest.post(url)
 				.basicAuth(username, api_key)
 				.header("Accept", "application/json")
 				.header("Content-Type", "application/json")
 				.body(dataTable)
-				.asJson();
+				.asString();
 		
 		 // Check if the status code is 201-CREATE
 	    assertEquals(201, response.getStatus());
@@ -185,12 +185,12 @@ class SpringbootProjectApplicationTests {
 			}
 		});
 
-		HttpResponse<JsonNode> response = Unirest.put(url + "FP-60")
+		HttpResponse<String> response = Unirest.put(url + "FP-60")
 				.basicAuth(username, api_key)
 				.header("Accept", "application/json")
 				.header("Content-Type", "application/json")
 				.body(dataTable)
-				.asJson();
+				.asString();
 
 		// Check if the status code is 204-NO_CONTENT
 	    assertEquals(204, response.getStatus());
@@ -208,12 +208,12 @@ class SpringbootProjectApplicationTests {
 	
 	@Test
 	public void addAttachmentToJiraTest() throws UnirestException {
-		HttpResponse<JsonNode> response = Unirest.post(url + "FP-30/attachments")
+		HttpResponse<String> response = Unirest.post(url + "FP-30/attachments")
 		         .basicAuth(username, api_key)
 		         .header("Accept", "application/json")
 		         .header("X-Atlassian-Token", "no-check")
 		         .field("file", new File("newFile.txt"))
-		         .asJson();
+		         .asString();
 		
 		 // Check if the status code is 200
 	    assertEquals(200, response.getStatus());

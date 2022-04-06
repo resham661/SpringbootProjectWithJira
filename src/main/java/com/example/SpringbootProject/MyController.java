@@ -2,6 +2,7 @@ package com.example.SpringbootProject;
 
 import java.io.File;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,24 +17,24 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 @Controller
+//@Profile(value= {"dev","prod","test"})
 public class MyController {
 	
 	final String username="reshamguru123@gmail.com";
-	final String api_key="6gxS3ub047gt1uhIUefr1DC1";
+	final String api_key="NNpf1Wg2md7RxxUEfY94CB9E";
 	final String url = "https://resham1.atlassian.net/rest/api/3/issue/";
 
 	@GetMapping("/getTicketData")
     public String getTicketData() throws UnirestException {
 
-		HttpResponse<JsonNode> response = Unirest.get(url + "FP-25")
+		HttpResponse<String> response = Unirest.get(url + "FP-25")
 				  .basicAuth(username, api_key)
 				  .header("Accept", "application/json")
-				  .asJson();
+				  .asString();
 
 		int responseCode = response.getStatus();
 		if(responseCode == 200) {
@@ -108,12 +109,12 @@ public class MyController {
 			}
 		});
 		
-		HttpResponse<JsonNode> response = Unirest.post(url)
+		HttpResponse<String> response = Unirest.post(url)
 				.basicAuth(username, api_key)
 				.header("Accept", "application/json")
 				.header("Content-Type", "application/json")
 				.body(dataTable)
-				.asJson();
+				.asString();
 
 		return ("Issue is created successfully. Please check the created issue on Jira cloud. \n" + response.getBody());
 	}
@@ -187,12 +188,12 @@ public class MyController {
 			}
 		});
 
-		HttpResponse<JsonNode> response = Unirest.put(url + "FP-30")
+		HttpResponse<String> response = Unirest.put(url + "FP-30")
 				.basicAuth(username, api_key)
 				.header("Accept", "application/json")
 				.header("Content-Type", "application/json")
 				.body(dataTable)
-				.asJson();
+				.asString();
 
 		int responseCode = response.getStatus();	
 		if(responseCode == 204) {
@@ -220,12 +221,12 @@ public class MyController {
 	}
 	@RequestMapping("/addAttachmentToJira")
 	public String addAttachmentToJira() throws UnirestException {
-		HttpResponse<JsonNode> response = Unirest.post(url + "FP-30/attachments")
+		HttpResponse<String> response = Unirest.post(url + "FP-30/attachments")
 		         .basicAuth(username, api_key)
 		         .header("Accept", "application/json")
 		         .header("X-Atlassian-Token", "no-check")
 		         .field("file", new File("newFile.txt"))
-		         .asJson();
+		         .asString();
 
 		 int responseCode = response.getStatus();
 		 if(responseCode == 200) {
@@ -244,12 +245,12 @@ public class MyController {
       OutputStream outputstream = new FileOutputStream(fileId);
       GoogleDriveManager.getInstance().files().get(fileId).executeMediaAndDownloadTo(outputstream);
 
-      HttpResponse<JsonNode> response = Unirest.post(url + "FP-27/attachments")
+      HttpResponse<String> response = Unirest.post(url + "FP-27/attachments")
 		         .basicAuth(username, api_key)
 		         .header("Accept", "application/json")
 		         .header("X-Atlassian-Token", "no-check")
 		         .field("file", new File(fileId))
-		         .asJson();
+		         .asString();
 
       	int responseCode = response.getStatus();
 		if(responseCode == 200) {
