@@ -2,6 +2,7 @@ package com.example.SpringbootProject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,16 +23,17 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
+//@WebMvcTest(value=MyController.class)
 class SpringbootProjectApplicationTests {
+	
+	final String username="reshamguru123@gmail.com";
+	final String api_key="CQLhjb6Av1AYEt26EQwNBCD1";
+	final String url = "https://resham1.atlassian.net/rest/api/3/issue/";
 	
 	@Test
 	void contextLoads() {
 	}
-	
-    final String username="reshamguru123@gmail.com";
-	final String api_key="NNpf1Wg2md7RxxUEfY94CB9E";
-	final String url = "https://resham1.atlassian.net/rest/api/3/issue/";
-	
+		
 	@Test
 	public void getTicketDataTest() throws UnirestException {
 		
@@ -185,7 +187,7 @@ class SpringbootProjectApplicationTests {
 			}
 		});
 
-		HttpResponse<String> response = Unirest.put(url + "FP-60")
+		HttpResponse<String> response = Unirest.put(url + "FP-65")
 				.basicAuth(username, api_key)
 				.header("Accept", "application/json")
 				.header("Content-Type", "application/json")
@@ -198,14 +200,14 @@ class SpringbootProjectApplicationTests {
 	
 	@Test
 	public void deleteIssueTest() throws UnirestException {
-		HttpResponse<String> response = Unirest.delete(url + "FP-69")
+		HttpResponse<String> response = Unirest.delete(url + "FP-72")
 				  .basicAuth(username, api_key)
 				  .asString();
 
 		// Check if the status code is 204-NO_CONTENT
 	    assertEquals(204, response.getStatus());
 	}
-	
+	 
 	@Test
 	public void addAttachmentToJiraTest() throws UnirestException {
 		HttpResponse<String> response = Unirest.post(url + "FP-30/attachments")

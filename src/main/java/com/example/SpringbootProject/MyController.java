@@ -2,13 +2,14 @@ package com.example.SpringbootProject;
 
 import java.io.File;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,32 +21,33 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-@Controller
-//@Profile(value= {"dev","prod","test"})
+@RestController
+@Configuration
+@Profile("dev")
 public class MyController {
 	
 	final String username="reshamguru123@gmail.com";
-	final String api_key="NNpf1Wg2md7RxxUEfY94CB9E";
+	final String api_key="CQLhjb6Av1AYEt26EQwNBCD1";
 	final String url = "https://resham1.atlassian.net/rest/api/3/issue/";
 
-	@GetMapping("/getTicketData")
+	@RequestMapping(value="/getTicketData", method= RequestMethod.GET)
     public String getTicketData() throws UnirestException {
 
 		HttpResponse<String> response = Unirest.get(url + "FP-25")
 				  .basicAuth(username, api_key)
 				  .header("Accept", "application/json")
 				  .asString();
-
+ 
 		int responseCode = response.getStatus();
 		if(responseCode == 200) {
 			return ("Check the data\n" + response.getBody());	
-		}
+		} 
 		else {
 			return ("Please check the Issue id or key\n" + response.getBody());
 		}
     }
 
-	@RequestMapping("/createIssue")
+	@RequestMapping(value="/createIssue", method= {RequestMethod.POST, RequestMethod.GET})
 	public String createIssue() throws UnirestException {
 		JsonNodeFactory factory = JsonNodeFactory.instance;
 		ObjectNode dataTable = new ObjectNode(factory);
@@ -119,7 +121,7 @@ public class MyController {
 		return ("Issue is created successfully. Please check the created issue on Jira cloud. \n" + response.getBody());
 	}
 	
-	@RequestMapping("/updateIssue")
+	@RequestMapping(value="/updateIssue", method= {RequestMethod.PUT, RequestMethod.GET})
 	public String updateIssue() throws UnirestException {
 		// The dataTable definition using the Jackson library
 		com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -204,9 +206,9 @@ public class MyController {
 		}
 	}
 	
-	@RequestMapping("/deleteIssue")
+	@RequestMapping(value="/deleteIssue", method= {RequestMethod.DELETE, RequestMethod.GET})
 	public String deleteIssue() throws UnirestException {
-		HttpResponse<String> response = Unirest.delete(url + "FP-60")
+		HttpResponse<String> response = Unirest.delete(url + "FP-72")
 				  .basicAuth(username, api_key)
 				  .asString();
 
@@ -219,7 +221,7 @@ public class MyController {
 			return "Please check the Issue id or key";
 		}
 	}
-	@RequestMapping("/addAttachmentToJira")
+	@RequestMapping(value="/addAttachmentToJira", method= {RequestMethod.POST, RequestMethod.GET})
 	public String addAttachmentToJira() throws UnirestException {
 		HttpResponse<String> response = Unirest.post(url + "FP-30/attachments")
 		         .basicAuth(username, api_key)
@@ -237,7 +239,8 @@ public class MyController {
 		}	
 	}
 	
-/*	  @RequestMapping("/download")
+/*	
+	@RequestMapping(value="/downloadFile", method= RequestMethod.POST)
     public String downloadFile() throws IOException, GeneralSecurityException, UnirestException {
       
       String fileId = "1mB8ur76r5gxBtkIhiRyejerHtg04yUvY";
